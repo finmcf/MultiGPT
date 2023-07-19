@@ -12,7 +12,8 @@ namespace YourNamespace.Controllers
 {
     public class Chatbot
     {
-        private readonly string ApiEndpoint = "https://api.openai.com/v1/engines/davinci-codex/completions";
+        private readonly string ApiEndpoint = "https://api.openai.com/v1/engines/davinci/completions";
+
         private readonly HttpClient _httpClient;
         private readonly string _apiKey;
 
@@ -28,21 +29,55 @@ namespace YourNamespace.Controllers
             var requestBody = new
             {
                 prompt = prompt,
-                max_tokens = 50,
-                temperature = 0.6,
-                n = 1,
-                stop = ""
+                max_tokens = 100,
+                temperature = 0.6
             };
 
             var content = new StringContent(JsonConvert.SerializeObject(requestBody), Encoding.UTF8, "application/json");
 
-            var response = await _httpClient.PostAsync(ApiEndpoint, content);
-            var responseBody = await response.Content.ReadAsStringAsync();
+            try
+            {
+                var response = await _httpClient.PostAsync(ApiEndpoint, content);
+                var responseBody = await response.Content.ReadAsStringAsync();
 
-            dynamic jsonResponse = JsonConvert.DeserializeObject(responseBody);
-            var generatedResponse = jsonResponse.choices[0].text.Value;
+                Console.WriteLine(responseBody); // Print the response
 
-            return generatedResponse;
+                if (responseBody == null)
+                {
+                    throw new Exception("The response from the API was null.");
+                }
+
+                dynamic jsonResponse;
+                try
+                {
+                    jsonResponse = JsonConvert.DeserializeObject(responseBody);
+                }
+                catch (JsonReaderException ex)
+                {
+                    Console.WriteLine("The response from the API was not valid JSON: " + ex.Message);
+                    throw;
+                }
+
+                if (jsonResponse == null)
+                {
+                    throw new Exception("Unable to parse response from API.");
+                }
+
+                if (jsonResponse.choices != null && jsonResponse.choices[0] != null && jsonResponse.choices[0].text != null)
+                {
+                    var generatedResponse = jsonResponse.choices[0].text.Value;
+                    return generatedResponse;
+                }
+                else
+                {
+                    throw new Exception("Unexpected response format from API.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message); // Print the error message
+                throw;
+            }
         }
 
         public List<string> BreakDownPrompt(string response)
