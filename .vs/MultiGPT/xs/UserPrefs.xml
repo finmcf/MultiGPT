@@ -1,10 +1,11 @@
 ﻿<Properties StartupConfiguration="{6B47E6D0-BAA1-4F5F-A617-9A0B3E8D480E}|Default">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Program.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Controllers/ChatController.cs">
     <Files>
-      <File FileName="Program.cs" Line="1" Column="1" />
-      <File FileName="Controllers/ChatController.cs" />
+      <File FileName="Program.cs" Line="26" Column="1" />
+      <File FileName="Controllers/ChatController.cs" Line="17" Column="27" />
+      <File FileName="MultiGPT.csproj" Line="16" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -16,7 +17,6 @@
               </Node>
               <Node name="Controllers" expanded="True" />
               <Node name="Properties" expanded="True" />
-              <Node name="Program.cs" selected="True" />
             </Node>
           </Node>
         </State>
